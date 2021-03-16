@@ -1,0 +1,320 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
+*{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+    font-family: 'Dancing Script', cursive;
+}
+body{
+    background: url(../imagenes/Fondo1.jpg);
+    background-size: 100vw 100vh;
+    background-repeat: no-repeat;
+}
+.capa{
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0,0,0,0.4);
+    z-index: -1;
+    top: 0; left: 0;
+}
+/*Estilo del encabezado*/
+.header{
+    background: rgba(0,0,0,0.3);
+    width: 100%;
+    height: 70px;
+    position: fixed;
+    top:0; left:0;
+}
+.container{
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.container .btn-menu, .logo{
+    float:left;
+    line-height: 70px;
+}
+
+.container .btn-menu label{
+    color: #fff;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.logo h1{
+    color:#fff;
+    font-weight: 400;
+    font-size: 40px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.container menu{
+    display: inline-block;
+    line-height: 70px;
+}
+
+.container .menu a{
+    float:right;
+    border-radius: 50px;
+    padding: 20px 80px;
+    line-height: 42px;
+    text-decoration: none;
+    background: rgba(0,0,0,0.1);
+    color: #fff;
+    transition: all 0.5s ease-in;
+    border-bottom: 1px solid #fff;
+    font-size: 20px;
+}
+
+.container .menu a:hover{
+    border-bottom:2px solid #c7c7c7;
+    padding: 5px 10px;
+}
+/*Fin del estilo del encabezado*/
+
+
+/*Diseño del botón y ventana modal 1*/
+body, .psw{
+    margin-right: 10px;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.psw{
+    position: fixed;
+    top: 0; left: 0;
+    background: rgba(0,0,0,0.3);
+    transition: all 500ms ease;
+    opacity: 0;
+    visibility: hidden;
+}
+
+#psw:checked ~ .psw{
+    opacity: 1;
+    visibility: visible;
+}
+
+.cont-psw{
+ width: 400px;
+ height:300 px;
+ margin: auto;
+ background: #fff;
+ box-shadow: 1px 7px 25px rgba(0,0,0,0.6);
+ transition: all 500ms ease;
+ position: relative;
+ transform:translateY(-30%)
+}
+
+#psw:checked ~ .psw .cont-psw{
+    transform: translateY(0%);
+}
+
+.cont-psw header{
+font-size: 20px;
+padding: 10px;
+background: royalblue;
+color:rgb(255, 255, 255);
+}
+
+.cont-psw label{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+}
+ 
+#psw{
+    display: none;
+}
+
+.lbl-psw{
+    font-size: 25px;
+    background: #fff;
+    padding: 10px 15px;
+    border-radius: 9px;
+    cursor: pointer;
+}
+/*Fin del diseño de la ventana modal 1*/
+
+/*Diseño del botón y ventana modal 2*/
+body, .contacto{
+    margin-right: 10px;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.contacto{
+    position: fixed;
+    top: 0; left: 0;
+    background: rgba(0,0,0,0.3);
+    transition: all 500ms ease;
+    opacity: 0;
+    visibility: hidden;
+}
+
+#contacto:checked ~ .contacto{
+    opacity: 1;
+    visibility: visible;
+}
+
+.cont-cont{
+ width: 400px;
+ height:300 px;
+ margin: auto;
+ background: #fff;
+ box-shadow: 1px 7px 25px rgba(0,0,0,0.6);
+ transition: all 500ms ease;
+ position: relative;
+ transform:translateY(-30%)
+}
+
+#contacto:checked ~ .contacto .cont-cont{
+    transform: translateY(0%);
+}
+.cont-cont header{
+padding: 10px;
+background: royalblue;
+color:rgb(255, 255, 255);
+}
+
+.cont-cont label{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
+}
+ 
+#contacto{
+    display: none;
+}
+
+.lbl-contacto{
+    font-size: 25px;
+    background: #fff;
+    padding: 10px 15px;
+    border-radius: 9px;
+    cursor: pointer;
+}
+/*Fin del diseño de la ventana modal 2*/
+
+
+
+/*Menu lateral*/
+#btn-menu{
+    display: none;
+}
+
+.container-menu{
+    position:absolute;
+    background: rgba(0,0,0,0.5);
+    width: 100%;
+    height: 70px;
+    top:0; left: 0;
+    transition: all 500ms ease;
+    opacity: 0;
+    visibility: hidden;
+}
+#btn-menu:checked ~ .container-menu{
+    opacity: 1;
+    visibility: visible;
+}
+.cont-menu{
+    width:100%;
+    max-width: 250px;
+    background: #1c1c1c;
+    height: 82vh;
+    position: relative;
+    transition: all 500ms ease;
+    transform:translateX(-100%);
+}
+#btn-menu:checked ~ .container-menu .cont-menu{
+    transform:translateX(0%);
+}
+.cont-menu nav{
+    transform: translateY(15%);
+}
+
+.cont-menu nav a{
+    font-size: 22px;
+    display: block;
+    text-decoration:none;
+    padding: 25px;
+    color: #c7c7c7;
+    border-left: 5px solid transparent;
+    transition: all 400ms ease;
+}
+
+.cont-menu nav a:hover{
+    border-left: 5px solid #c7c7c7;
+    background: #1f1f1f;
+}
+
+.cont-menu label{
+ position: absolute;
+ right: 5px;
+ top:10px;
+ color:#fff;
+ cursor:pointer;
+ font-size: 15px;
+}
+/*Fin menu lateral*/
+
+
+/*Diseño del footer*/
+footer{
+    align-items: center;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0,0,0,0.4);
+    height: 100px;
+    width: 100vw;
+    padding-top:15px;
+    color:rgb(255, 255, 255);
+    }
+
+.container-footer{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    border-bottom: 2px solid #fff;
+}
+
+.container-footer h4{
+    font-size: 1.2rem;
+    font-weight: 400;
+    text-transform: capitalize;
+    margin: 15px auto;
+    line-height: 10px;
+  
+}
+
+.footer-bottom{
+    background: #000;
+    width: 100vw;
+    padding:10px 0;
+    text-align: center;
+}
+
+.footer-bottom p{
+font-size: 14px;
+text-transform: capitalize;
+}
