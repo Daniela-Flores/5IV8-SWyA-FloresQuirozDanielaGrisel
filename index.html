@@ -4,75 +4,110 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu</title>
-    <link rel="stylesheet" href="./CSS/masterstyle.css">
-    <link rel="stylesheet" href="./CSS/fontello.css">
+    <title>Hobbies</title>
+    <link rel=StyleSheet href="CSS/estilos.css">
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;500&family=Dancing+Script:wght@500&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header class="header">
-        <div class="container">
-        <div class="btn-menu">
-            <label for="btn-menu" class="icon-menu"></label>
-        </div>
-            <div class="logo">
-                <h1>Currículo</h1>
-            </div>
+    <header class="header" id="inicio">
+        <img src="imagenes/menu.svg" alt="" class="menu">
+        <nav class="menu-navegacion">
+            <a href="#inicio">Inicio</a>
+            <a href="#historia">Hobbies<Hist/a>
+            <a href="#galeria">Galeria</a>
+            <a href="#conoce">Otros</a>
+            <a href="#contacto">Contacto</a>
+        </nav>
+        <div class="contenedor head">
+            <h1 class="titulo">Hobbies</h1>
+            <p class="copy">Un medio feliz entre una pasión y una monomanía</p>
         </div>
     </header>
-    <div class="capa"></div>
-<!---->
-<input type="checkbox" id="btn-menu">
-<div class="container-menu">
-    <div class="cont-menu">
-        <nav>
-            <a href="datos.html">Datos Personales</a>
-            <a href="escolaridad.html">Escolaridad</a>
-            <a href="certificaciones.html">Certificaciones</a>
-            <a href="hobbies.html">Hobbies</a>
-            <a href="habilidades.html">Habilidades</a>
-        </nav>
-        <label for="btn-menu" class="icon-cancel"></label>
-    </div>
-</div>
-<!---->
-<input type="checkbox" id="psw">
-<label for="psw" class="lbl-psw">GitHub</label>
-<div class="psw">
-    <div class="cont-psw">
-        <header>Repositorio de Github</header>
-        <label for="psw">X</label>
-        <div class="contenido">
-            <p>https://github.com/Daniela-Flores/4IV8-PSW-FloresQuirozDanielaGrisel.git</p>
+    <main>
+        <section class="contenedor" id="historia">
+            <h2 class="subtituloo">Hobbies, espacios de felicidad.</h2>
+            <div class="contenedor-historia">
+                <img src="imagenes/Thinking_Monochromatic.svg" alt="">
+                <div class="thinking-historia">
+                    <div class="historia">
+                        <h3 class="n-historia"><span class="number">1.</span>
+                        </span> Te relajan y a la vez te puede convertir en un ser más creativo.</h3>
+                        <p>Suelen ser importantes tanto para la salud física como emocional porque 
+                        es lo que logra alejar tu mente un momento de las preocupaciones y del estrés de la rutina de cada día.</p>
+                    </div>
+                    <div class="historia">
+                        <h3 class="n-historia"><span class="number">2.</span>
+                        </span>Escogemos aquello que refleja nuestras motivaciones y talentos.</h3>
+                        <p>Por este motivo, es fundamental procurar sacar tiempo para realizarnos y alimentar esas pasiones.
+                    Todos tenemos talentos escondidos, que solo basta con encontrarlos y sacarlos a la luz.</p>
+                    </div>
+                    <div class="historia">
+                        <h3 class="n-historia"><span class="number">3.</span>
+                        </span>Los momentos de ocio son igual de importantes que los del trabajo diario.</h3>
+                        <p>Muchas personas dicen no realizar hobbies porque no tienen el tiempo para dedicarles. 
+                        Pues no es así, si organizas tu agenda encontrarás el espacio para practicar lo que más te guste.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="gallery" id="galeria">
+            <div class="contenedor">
+                <h2 class="subtitulo">Galería</h2>
+            <div class="contenedor-galeria">
+               <img src="imagenes/uno.jpg" alt="" class="img-galeria">
+               <img src="imagenes/dos.jpg" alt="" class="img-galeria">
+               <img src="imagenes/tres.jpg" alt="" class="img-galeria">
+               <img src="imagenes/cuatro.jpg" alt="" class="img-galeria">
+               <img src="imagenes/cinco.jpg" alt="" class="img-galeria">
+               <img src="imagenes/seis.jpg" alt="" class="img-galeria">
+            </div>
+            </div>
+        </section>
+        <section class="imagen-light">
+            <img src="imagenes/close.svg" alt="" class="close">
+            <img src="imagenes/tres.jpg" alt="" class="agregar">
+        </section>
+        <section class="contenedor" id="conoce">
+        <h2 class="subtitulo">Algunos otros</h2>
+        <section class="conocer">
+            <div class="cont-con">
+                <img src="imagenes/Coding _Isometric.svg" alt="">
+                <h3 class="n-conocer">Programación</h3>
+            </div>
+            <div class="cont-con">
+                <img src="imagenes/Dog walking_Isometric.svg" alt="">
+                <h3 class="n-conocer">Paseos</h3>
+            </div>
+            <div class="cont-con">
+                <img src="imagenes/Reading a book_Isometric.svg" alt="">
+                <h3 class="n-conocer">Lectura</h3>
+            </div>
+        </section>
+    </section>
+    </main>
+    <footer id="contacto">
+        <div class="contenedor footer-content">
+            <div class="contacta">
+                <h2 class="brand">Hobbies</h2>
+                <p>Por: Daniela Flores</p>
+            </div>
+            <div class="social-media">
+                <a href="https://www.facebook.com/profile.php?id=100028158452060" target="_blank" class="social-media-icon">
+                <i class='bx bxl-facebook' ></i>
+                </a>
+                <a href="https://www.instagram.com/_daniela_gsl/?hl=es" target="_blank" class="social-media-icon">
+                    <i class='bx bxl-instagram' ></i>
+                </a>
+                <a href="https://github.com/Daniela-Flores" target="_blank" class="social-media-icon">
+                 <i class='bx bxl-github' ></i>
+                </a>
+            </div>
         </div>
-    </div>
-</div>
-<!---->
-<input type="checkbox" id="contacto">
-<label for="contacto" class="lbl-contacto">Contacto</label>
-<div class="contacto">
-    <div class="cont-cont">
-        <header>Daniela Flores</header>
-        <label for="contacto">X</label>
-        <div class="info-cont">
-           <p>Institucional: dfloresq1900@alumno.ipn.mx</p>
-           <br>
-            <p>Gmail: flores.quiroz.daniela.grisel5@gmail.com</p>
-        </div>
-    </div>
-</div>
-
-
-<footer>
-    <div class="container-footer">
-            <h4>
-               Currículo
-            </h4>   
-    </div>
-    <div class="footer-bottom">
-        <p>
-            Por : Daniela Flores
-        </p>
-    </div>
-</footer>
+        <div class="line"></div>
+    </footer>
+    <script src="JS/menu.js"></script>
+    <script src="JS/lightbox.js"></script>
 </body>
 </html>
