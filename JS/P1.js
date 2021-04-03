@@ -184,3 +184,58 @@ function borrar6(){
     document.formulario.fecha.value ="";
     document.formulario.edadcalc.value="";
 }
+
+//Problema 7
+
+function op(){
+    var patron = /[0-9]{1,2}(?:\.[0-9])?$/
+    var val1 = parseFloat(document.formulario.n1.value);
+    var val2 = parseFloat(document.formulario.n2.value);
+    if(patron.test(val1)&&patron.test(val2)){
+        if (val1 == val2){
+            document.formulario.resultado.value= (val1*val2).toFixed(2);
+        }
+        else if(val1>val2){
+            document.formulario.resultado.value= (val1-val2).toFixed(2);
+        }
+        else{
+            document.formulario.resultado.value= (val1+val2).toFixed(2);
+        }
+        
+    }
+    else{
+        alert("Ingresa números con el formato correcto. Enteros o decimales usando punto")
+    }
+
+}
+
+
+//Problema 8
+function mayor(){
+var patron = /[0-9]{1,2}(?:\.[0-9])?$/
+var val1 = parseFloat(document.formulario.n1.value);
+var val2 = parseFloat(document.formulario.n2.value);
+var val3 = parseFloat(document.formulario.n3.value);
+if(patron.test(val1)&&patron.test(val2)&&patron.test(val3)){
+    let array = [val1, val2, val3]
+    var i 
+for (i=0;i<3;i++) { 
+    if (array[i]>=val1){
+        document.formulario.numay.value=array[i];
+    }  
+}
+}
+else{
+    alert("Ingresa números con el formato correcto. Enteros o decimales usando punto")
+}
+
+}
+
+function borrar8(){
+    document.formulario.n1.value="";
+    document.formulario.n2.value="";
+    document.formulario.n3.value="";
+    document.formulario.numay.value="";
+}
+
+//Problema 9

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Problema 7</title>
+    <link rel=StyleSheet href="CSS/problemas.css">
+    <script src="JS/P1.js"></script>
+</head>
+<header>
+    <a href="index.html"><img src="imagenes/back.svg" alt="" class="menu"></a>
+    <h1>P7</h1>
+</header>
+<body>
+    <form method="POST" name="formulario">
+        <h1 class="problema">
+           Ingresa dos numeros y descubre el resultado.
+        </h1>
+             <table>
+                 <tr>
+                     <td class="td_sup">Introduce el primer numero.</td>
+                     <td class="td_inf"><input type="text" name="n1" onkeypress="return validarn(event);" required></td>
+                 </tr>
+                 <tr>
+                    <td class="td_sup">Introduce el segundo numero.</td>
+                    <td class="td_inf"><input type="text" name="n2" onkeypress="return validarn(event);" required></td>
+                </tr>
+                 <tr>
+                     <td></td>
+                     <td class="td_inf"><input type="button" value="Operación" name="oper" onclick="op()">
+                     </td>
+                 </tr>
+                 <tr>
+                     <td class="td_sup">
+                    Resultado: <td><input type="text" name="resultado"
+                     readonly="readonly" class="input_text"> 
+                    </td>
+                     </td>
+                 </tr>
+                 <tr>
+                    <td></td>
+                    <td class="td_inf"><input type="button" value="Borrar" name="reset" onclick="borrar7()">
+                    </td>
+                </tr>
+             </table>
+         </form>
+    
+</body>
+</html>
