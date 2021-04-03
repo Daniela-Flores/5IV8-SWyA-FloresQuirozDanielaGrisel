@@ -23,10 +23,20 @@ function validarn(evt){
 /*Problema 1 */
 
 function interes(){
+    var patron = /[0-9](?:\.[0-9])?$/
     var valor = parseFloat(document.getElementById('inv').value);
-    var interes = valor*0.02;
-    var total = valor+interes;
-    document.formulario.sueldoti.value="$"+total;
+    if (document.getElementById('inv').value == ""){
+        alert("Es necesario que llenes el campo")
+    }
+    else if (patron.test(valor)){
+        var interes = valor*0.02;
+        var total = valor+interes;
+        document.formulario.sueldoti.value="$"+(total).toFixed(2);
+    }
+    else{
+        alert("Es necesario que digites números enteros, o decimales utilizando punto.")
+    }
+   
 }
 
 function borrar(){
@@ -41,9 +51,10 @@ function obtsueldo(){
     if (document.getElementById('sueldoo').value == ""){
         alert("Debes indicar tu sueldo base, por lo menos.");
     }
-    else{var sueldo = parseFloat(document.getElementById('sueldoo').value);
+    else{
+    var sueldo = parseFloat(document.getElementById('sueldoo').value);
     var totall = sueldo+document.getElementById('ventass').value*.10;
-    document.getElementById('sueldotot').value="$"+totall;}
+    document.getElementById('sueldotot').value="$"+(totall).toFixed(2);}
 }
 
 function borrar2(){
@@ -61,7 +72,7 @@ function compratot(){
     else{
     var compra = parseFloat(document.formulario.compra.value);
     var total= compra - compra*.15;
-    document.formulario.totpagar.value="$"+total;
+    document.formulario.totpagar.value="$"+(total).toFixed(2);
     }
 }
 
@@ -239,3 +250,45 @@ function borrar8(){
 }
 
 //Problema 9
+function hextras(){
+    ph = parseFloat(document.formulario.n2.value);
+    he = parseFloat(document.formulario.n3.value);
+    if (he == ""||ph==""){
+        alert("Es necesario que llenes todos los campos para realizar el cálculo");
+    }
+    else{
+        if (he>40){
+            if((he-40)<=8){
+                var t=(he-40)*ph*2;
+                document.formulario.sueldoext.value="$"+t.toFixed(2);
+                document.formulario.sueldoext2.value="$"+((40*ph)+t).toFixed(2);
+            }
+            else{ 
+                var a = (he-40)-8;
+                var b =(a*ph*3)+(8*ph*2)
+                document.formulario.sueldoext.value= "$"+(b).toFixed(2);
+                document.formulario.sueldoext2.value="$"+((40*ph)+b).toFixed(2);
+            }
+        }
+        else{
+            document.formulario.sueldoext.value="$0";
+            document.formulario.sueldoext2.value="$"+(ph*he).toFixed(2);
+        }
+    }
+}
+
+function borrar9(){
+    document.formulario.sueldoext.value="";
+    document.formulario.sueldoext2.value="";
+    document.formulario.n2.value="";
+    document.formulario.n3.value="";
+}
+
+
+
+
+
+
+
+
+//Problema 10
