@@ -31,7 +31,7 @@ function interes(){
     else if (patron.test(valor)){
         var interes = valor*0.02;
         var total = valor+interes;
-        document.formulario.sueldoti.value="$"+(total).toFixed(2);
+        document.formulario.sueldoti.value="$  "+(total).toFixed(2);
     }
     else{
         alert("Es necesario que digites números enteros, o decimales utilizando punto.")
@@ -54,7 +54,7 @@ function obtsueldo(){
     else{
     var sueldo = parseFloat(document.getElementById('sueldoo').value);
     var totall = sueldo+document.getElementById('ventass').value*.10;
-    document.getElementById('sueldotot').value="$"+(totall).toFixed(2);}
+    document.getElementById('sueldotot').value="$  "+(totall).toFixed(2);}
 }
 
 function borrar2(){
@@ -72,10 +72,14 @@ function compratot(){
     else{
     var compra = parseFloat(document.formulario.compra.value);
     var total= compra - compra*.15;
-    document.formulario.totpagar.value="$"+(total).toFixed(2);
+    document.formulario.totpagar.value="$  "+(total).toFixed(2);
     }
 }
 
+function borrar3(){
+    document.formulario.compra.value = "";
+    document.formulario.totpagar.value = "";
+}
 //Problema 4
 
 function promedio(){
@@ -89,7 +93,7 @@ function promedio(){
         val3 = parseFloat(document.formulario.c3.value) * .15;
         prom1 =  ((ca11+ca12+ca13)/3)*.55;
         final = val2 + val3 + prom1;
-        document.formulario.promedioo.value = final;
+        document.formulario.promedioo.value = (final).toFixed(2);
     }
 }
 
@@ -100,7 +104,7 @@ function validacal(){
     var prueba3 = document.formulario.c13.value;
     var prueba4 =  document.formulario.c2.value;
     var prueba5 =  document.formulario.c3.value;
-    if (prueba == "" || prueba2 == "" || prueba3 == "" ||prueba4 == "" ||prueba5 == "" ){
+    if (document.formulario.c11.value == "" || document.formulario.c12.value == "" || document.formulario.c13.value == "" ||document.formulario.c2.value == "" || document.formulario.c3.value == "" ){
         alert("Debes llenar todos los campos");
         return 0;
     }
@@ -129,8 +133,7 @@ function porcentaje(){
     var patron= /[0-9]{1,2}/
     var prueba = document.formulario.hombres.value;
     var prueba2 = document.formulario.mujeres.value;
-
-    if (prueba == "" || prueba2 ==""){
+    if (document.formulario.hombres.value == "" || document.formulario.mujeres.value ==""){
         alert("Llena ambos campos");
     }
     else if(patron.test(prueba) && patron.test(prueba2)){
@@ -144,6 +147,27 @@ function porcentaje(){
         alert("Ingresa una cantidad válida. Sólo enteros de 1 o 2 cifras.")
     }
 }
+
+
+function validar5(evt){
+    if(window.event){
+        keynum= evt.keyCode;
+    }
+    else{
+        keynum= evt.which;
+    }
+
+    if((keynum>47 && keynum <58 )||keynum == 8|| keynum == 13)
+    {
+        return true;
+    }
+    else{
+        alert("Ingresar solo numeros");
+        return false;
+    }
+
+}
+
 
 function borrar5(){
     document.formulario.mujeres.value="";
@@ -173,7 +197,10 @@ function validar6(evt){
 function edad(){
     var patron = /^([0-2][0-9]|3[0-1])(\/|-)(0[1-9]|1[0-2])\2(\d{4})$/
     var prueba = document.formulario.fecha.value;
-    if (patron.test(prueba)){
+    if (document.formulario.fecha.value == ""){
+        alert("Debes ingresar tu fecha de nacimiento");
+    }
+    else if (patron.test(prueba)){
         let fechanac = new Date(prueba);
         let actual = new Date();
         var anios = actual.getFullYear() - fechanac.getFullYear();
@@ -202,7 +229,10 @@ function op(){
     var patron = /[0-9]{1,2}(?:\.[0-9])?$/
     var val1 = parseFloat(document.formulario.n1.value);
     var val2 = parseFloat(document.formulario.n2.value);
-    if(patron.test(val1)&&patron.test(val2)){
+    if (document.formulario.n1.value==""||document.formulario.n2.value==""){
+        alert("Debes ingresar ambos números")
+    }
+    else if(patron.test(val1)&&patron.test(val2)){
         if (val1 == val2){
             document.formulario.resultado.value= (val1*val2).toFixed(2);
         }
@@ -227,7 +257,11 @@ var patron = /[0-9]{1,2}(?:\.[0-9])?$/
 var val1 = parseFloat(document.formulario.n1.value);
 var val2 = parseFloat(document.formulario.n2.value);
 var val3 = parseFloat(document.formulario.n3.value);
-if(patron.test(val1)&&patron.test(val2)&&patron.test(val3)){
+
+if(document.formulario.n1.value ==""||document.formulario.n2.value==""||document.formulario.n3.value==""){
+    alert("Debes introducir los 3 números")
+}
+else if(patron.test(val1)&&patron.test(val2)&&patron.test(val3)){
     let array = [val1, val2, val3]
     var i 
 for (i=0;i<3;i++) { 
@@ -253,26 +287,26 @@ function borrar8(){
 function hextras(){
     ph = parseFloat(document.formulario.n2.value);
     he = parseFloat(document.formulario.n3.value);
-    if (he == ""||ph==""){
+    if (document.formulario.n2.value == ""||document.formulario.n3.value==""){
         alert("Es necesario que llenes todos los campos para realizar el cálculo");
     }
     else{
         if (he>40){
             if((he-40)<=8){
                 var t=(he-40)*ph*2;
-                document.formulario.sueldoext.value="$"+t.toFixed(2);
-                document.formulario.sueldoext2.value="$"+((40*ph)+t).toFixed(2);
+                document.formulario.sueldoext.value="$  "+t.toFixed(2);
+                document.formulario.sueldoext2.value="$  "+((40*ph)+t).toFixed(2);
             }
             else{ 
                 var a = (he-40)-8;
                 var b =(a*ph*3)+(8*ph*2)
-                document.formulario.sueldoext.value= "$"+(b).toFixed(2);
-                document.formulario.sueldoext2.value="$"+((40*ph)+b).toFixed(2);
+                document.formulario.sueldoext.value= "$  "+(b).toFixed(2);
+                document.formulario.sueldoext2.value="$  "+((40*ph)+b).toFixed(2);
             }
         }
         else{
-            document.formulario.sueldoext.value="$0";
-            document.formulario.sueldoext2.value="$"+(ph*he).toFixed(2);
+            document.formulario.sueldoext.value="$  0";
+            document.formulario.sueldoext2.value="$  "+(ph*he).toFixed(2);
         }
     }
 }
@@ -284,11 +318,38 @@ function borrar9(){
     document.formulario.n3.value="";
 }
 
-
-
-
-
-
-
-
 //Problema 10
+function utilidad(){
+    ant = parseFloat(document.formulario.antig.value);
+    salario = parseFloat(document.formulario.salario.value);
+    if(document.formulario.antig.value == ""||document.formulario.salario.value==""){
+        alert("Debes llenar ambos campos");
+    }
+    else{
+        if(ant<1){
+            document.formulario.utilidadcalc.value="$  "+(salario*.05).toFixed(2);
+        }
+        else if(ant>=1 && ant<5){
+            if(ant>=1&&ant<2){
+                document.formulario.utilidadcalc.value="$  "+(salario*.07).toFixed(2);
+            }
+            else if(ant>=2 && ant<5){
+                document.formulario.utilidadcalc.value="$  "+(salario*.1).toFixed(2);
+            }
+        }
+        else{
+            if(ant>=5&&ant<10){
+                document.formulario.utilidadcalc.value="$  "+(salario*.15).toFixed(2);
+            }
+            else if(ant>=10){
+                document.formulario.utilidadcalc.value="$  "+(salario*.2).toFixed(2);
+            }
+        }
+    }
+}
+
+function borrar10(){
+    document.formulario.utilidadcalc.value = "";
+    document.formulario.antig.value="";
+    document.formulario.salario.value="";
+}

@@ -12,10 +12,11 @@
 
 table{
     padding: 40px;
-    background-image: linear-gradient(to right, #ff8177 0%, #ff867a 0%, #ff8c7f 21%, #f99185 52%, #cf556c 78%, #b12a5b 100%);
+    background-image: linear-gradient(45deg, #8baaaa 0%, #ae8b9c 100%);
     margin-left: 30vw;
     margin-top: 10vh;
-    box-shadow: 0 0 6px black;
+    box-shadow: 0 0 7px rgb(12, 12, 12);
+    color:whitesmoke;
 }
 
 header{
@@ -76,4 +77,112 @@ header h1{
     color: rgb(116, 8, 71);
     letter-spacing: 3px;
     font-size: 10px;
+}
+
+footer{
+    background: linear-gradient(to bottom, #323232 0%, #3F3F3F 40%, #1C1C1C 150%), linear-gradient(to top, rgba(255,255,255,0.40) 0%, rgba(0,0,0,0.25) 200%);
+    background-blend-mode: multiply;
+    padding-bottom: 0.1px;
+    border: solid 1px rgb(255, 255, 255);
+    margin-top: 40px;
+}
+
+.footer-content{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+.contacta{
+    width: 40%;
+    color: whitesmoke;
+}
+
+.contacta p{
+    font-family: 'Montserrat', sans-serif;
+    margin-left: 65px;
+    font-weight: 400;
+}
+
+.brand{
+    font-weight: 500;
+    font-size: 25px;
+    font-weight: 400;
+}
+
+.brand+p{
+    font-weight: 500;
+}
+
+.social-media{
+    width: 50%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.social-media-icon{
+    display: inline-block;
+    margin-left: 20px;
+    margin-right: 60px;
+    width:60px;
+    height: 60px;
+    border: 1px solid whitesmoke;
+    border-radius: 50%;
+    text-align: center;
+    color: whitesmoke;
+}
+
+.social-media-icon:hover{
+background: whitesmoke;
+color: rgb(204, 192, 19);
+}
+
+.social-media-icon i{
+    font-size: 35px;
+    line-height: 60px;
+    font-weight: 400;
+}
+
+.line{
+    width: 90%;
+    max-width:  1200px;
+    margin: 0 auto;
+    height: 2px;
+    background: whitesmoke;
+    margin-bottom: 60px;
+}
+
+/*flexbox*/
+
+@media screen and (max-width:800px){
+
+    .titulo{
+        font-size: 40px;
+    }
+
+    .cont-con{
+        width: 50%;
+    }
+
+    .footer-content{
+        justify-content: center;
+    }
+
+    .social-media{
+        width: 80%;
+        justify-content: space-evenly;
+    }
+
+    .social-media i{
+        margin-left: 0;
+    }
+
+    .contacta{
+        text-align: center;
+        width: 80%;
+        margin-bottom: 40px;
+    }
 }

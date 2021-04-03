@@ -197,9 +197,6 @@ color: rgb(204, 192, 19);
 /*flexbox*/
 
 @media screen and (max-width:800px){
-    .menu-navegacion{
-        width: 50vw;
-    }
 
     .titulo{
         font-size: 40px;
