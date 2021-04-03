@@ -1,0 +1,79 @@
+
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&family=Roboto+Mono:wght@300&display=swap');
+
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto Mono', monospace;
+}
+
+table{
+    padding: 40px;
+    background-image: linear-gradient(to right, #ff8177 0%, #ff867a 0%, #ff8c7f 21%, #f99185 52%, #cf556c 78%, #b12a5b 100%);
+    margin-left: 30vw;
+    margin-top: 20vh;
+    box-shadow: 0 0 6px black;
+}
+
+header{
+    color: white;
+    height: 30vh;
+    width: 100vw;
+    background-image: linear-gradient(135deg, rgba(245, 247, 250, 0.336) 0%, rgba(195, 207, 226, 0.329) 100%), url(../imagenes/fondo2.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    box-shadow: 0 0 10px black;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.menu{
+    position:fixed;
+    top: 30px;
+    right: 30px;
+    background: rgba(212, 212, 212, 0.521);
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    border-radius: 10px;
+    box-shadow: 0 0 6px rgba(2, 2, 2, 0.521);
+}
+ 
+header h1{
+    margin-left: 10px;
+}
+.problema{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
+    margin-bottom: 20px;
+    margin-top: 30px;
+    margin-left: 10px;
+}
+
+.td_sup{
+    align-items: left;
+    width: 100;
+    justify-content: left;
+
+}
+
+.td_inf{
+    align-items: center;
+    justify-content: center;
+    width: 150;
+}
+
+.input_text{
+    align-items: center;
+    justify-content: center;
+    size: 12;
+    border-width: 2px;
+    border-style: solid;
+    color: rgb(116, 8, 71);
+    letter-spacing: 3px;
+    font-size: 10px;
+}
