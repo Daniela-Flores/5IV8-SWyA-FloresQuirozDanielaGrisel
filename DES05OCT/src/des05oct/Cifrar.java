@@ -10,14 +10,21 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Arrays;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import javax.crypto.*;
+import javax.crypto.spec.DESKeySpec;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import sun.misc.BASE64Encoder;
 
 /**
  *
@@ -30,32 +37,33 @@ public class Cifrar extends javax.swing.JFrame {
         initComponents();
     }
     
+  
     
-    //PARA CIFRAR
-    public String cifrar(String llave, String mensaje){
-       jTextArea2.setText("");
-        String cifrad = "";
+    //CIFRAR EN DES
+    public static String cifrar(String mensaje, String llave){
+   String ee ="";
+        try{
+               // El algoritmo DES requiere una fuente confiable de números aleatorios
+        SecureRandom sr = new SecureRandom();
+                 // Crea un objeto DESKeySpec a partir de los datos clave originales
+        DESKeySpec dks = new DESKeySpec(llave.getBytes("UTF-8"));
+                 // Cree una fábrica de claves y utilícela para convertir DESKeySpec en un objeto SecretKey
+        SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES");
+        SecretKey key1 = keyFactory.generateSecret(dks);
+                 // El objeto de cifrado realmente completa la operación de cifrado
+        Cipher cipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
+                 // Inicializa el objeto Cipher con la clave
+        cipher.init(Cipher.ENCRYPT_MODE, key1, sr);
+                 // Ahora, obtenga los datos y cifrelos
+        byte encryptedData[] = cipher.doFinal(mensaje.getBytes("UTF-8"));
+                 // Codificar en forma de creación de personajes a través de BASE64 bit
+        ee = new BASE64Encoder().encode(encryptedData);
       
-       try{
-           //Valor hash de la clave ingresada
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            //Guardar valor hash en un arreglo
-            byte[] llavee = md.digest(llave.getBytes("utf-8"));
-            byte[] llavebytes = Arrays.copyOf(llavee, 24);
-            //Generamos la SecretKey
-            SecretKey key = new SecretKeySpec(llavebytes, "DESede");
-            Cipher cifrado =  Cipher.getInstance("DESede");
-            cifrado.init(Cipher.ENCRYPT_MODE, key);
-            byte[] plaintextbytes = mensaje.getBytes("utf-8");
-            byte[] buf = cifrado.doFinal(plaintextbytes);
-            byte[] base64byte = Base64.getEncoder().encode(buf);
-            cifrad = new String(base64byte);
-            
-         
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "Error");
-        } 
-        return cifrad;
+        
+      }catch(Exception e){
+          
+      }
+        return ee;
     }
 
    
@@ -269,6 +277,7 @@ public class Cifrar extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1MouseClicked
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+       jTextArea2.setText("");
         boolean ind = false;
         if(jTextArea1.getText().equals("")){
               JOptionPane.showMessageDialog(null, "Carga un .txt");
@@ -286,9 +295,10 @@ public class Cifrar extends javax.swing.JFrame {
            }
        }
         if(ind){
-           String msjcifrado= cifrar(jTextField1.getText(), jTextArea1.getText());
-           jTextArea2.setText(msjcifrado);
-          
+        String clearText =jTextArea1.getText();
+        String key = jTextField1.getText();
+        String encryptText = cifrar(clearText, key);
+        jTextArea2.setText(encryptText);
           
         }
         }

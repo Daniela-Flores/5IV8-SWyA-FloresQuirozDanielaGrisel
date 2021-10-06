@@ -8,14 +8,19 @@ package des05oct;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.security.InvalidKeyException;
 import java.security.MessageDigest;
+import java.security.SecureRandom;
 import java.util.Arrays;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import java.util.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.DESKeySpec;
 import javax.crypto.spec.SecretKeySpec;
+import sun.misc.BASE64Decoder;
 /**
  *
  * @author Danielao.0
@@ -29,31 +34,32 @@ public class Descifrar extends javax.swing.JFrame {
         initComponents();
     }
 
+    //DESCIFRAR DES
+    public static String descifrar(String mensajecifrado, String llave){
+       String ee ="";
+        try{
+            // El algoritmo DES requiere una fuente confiable de números aleatorios
+        SecureRandom sr = new SecureRandom();
+                 // Crea un objeto DESKeySpec a partir de los datos clave originales
+        DESKeySpec dks = new DESKeySpec(llave.getBytes());
+                 // Cree una fábrica de claves y utilícela para convertir DESKeySpec en un objeto SecretKey
+        SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES");
+        SecretKey key1 = keyFactory.generateSecret(dks);
+                 // El objeto de cifrado realmente completa la operación de cifrado
+        Cipher cipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
+                 // Inicializa el objeto Cipher con la clave
+        cipher.init(Cipher.DECRYPT_MODE, key1, sr);
+                 // Convierta el mensaje cifrado en una matriz de bytes utilizando el algoritmo BASE64
+        byte[] encryptedData = new BASE64Decoder().decodeBuffer(mensajecifrado);
+                 // Usa el algoritmo DES para descifrar el mensaje
+        byte decryptedData[] = cipher.doFinal(encryptedData);
+        ee = new String(decryptedData,"UTF-8");
 
-    //DESCIFRAR
-   public String descifrar(String llave, String mensajecifrado){
-       jTextArea2.setText("");
-       String des="";
-       try{
-           //Decodificar el mensaje cifrado
-           byte [] mensaje = Base64.getDecoder().decode(mensajecifrado.getBytes("utf-8"));
-           //Valor hash de la clave
-           MessageDigest md = MessageDigest.getInstance("MD5");
-           //Guardar
-           byte [] digestofpass = md.digest(llave.getBytes("utf-8"));
-           byte[] llaveBytes = Arrays.copyOf(digestofpass, 24);
-           //Generar SecretKey
-            SecretKey key = new SecretKeySpec(llaveBytes, "DESede");
-            Cipher descifrado =  Cipher.getInstance("DESede");
-            //Desencriptar
-            descifrado.init(Cipher.DECRYPT_MODE, key);
-            byte [] plaintext = descifrado.doFinal(mensaje);
-            des = new String(plaintext, "UTF-8");
         }catch(Exception e){
-           JOptionPane.showMessageDialog(null, "Error");
-       }
-       return des;
-   }
+            
+        }
+        return ee;
+    }
    
        //LEER TXT
     public String leertxt(){
@@ -280,7 +286,7 @@ public class Descifrar extends javax.swing.JFrame {
            }
        }
         if(ind){
-            String descifrado = descifrar(jTextField1.getText(),jTextArea1.getText());
+            String descifrado = descifrar(jTextArea1.getText(), jTextField1.getText());
             jTextArea2.setText(descifrado);
         }
         }
