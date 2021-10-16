@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+  <!-- Íconos -->
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <title>Descifrar</title>
+  <style>
+   body {
+      background-image: linear-gradient(to top, #5ee7df 0%, #b490ca 100%);
+    
+    }
+    .container{
+    padding: 50px;
+    background-image: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
+    color: rgb(97, 97, 97);
+    border-radius: 25px;
+    box-shadow: 4px 4px 4px 0px rgb(68, 67, 67);
+    width: 500px;
+  }
+  h1{
+    color: rgb(39, 0, 130);;
+  }
+  .btn{
+    background-color: rgb(39, 0, 130);
+    border-radius: 20px;
+    color: white;
+    border-color: rgb(39, 0, 130);
+  }
+  .table-light{
+    margin-top: 5vh;
+  }
+  .input-group-text{
+    background-color: rgb(39, 0, 130);
+    color: white;
+  }
+  footer{
+    margin-top: 10vh;
+    padding: 20px;
+    color: rgb(189, 182, 182);
+    font-weight: 400px;
+    background-color: rgb(39, 0, 130);
+    
+  }
+  input{
+    background-color: rgb(39, 0, 130);
+  }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">
+        Inicio
+      </a>
+      <ul class="nav">
+        <li class="navbar-brand">
+          <a class="navbar-brand" aria-current="page" href="/cifrar">Cifrar</a>
+        </li>
+        <li class="navbar-brand">
+          <a class="navbar-brand" href="/descifrar">Descifrar</a>
+        </li>
+        </ul>
+    </div>
+  </nav>
+
+  <br>
+  <div class="">
+
+    <div class="container">
+      <div class="card-title text-center">
+        <h1>¡Descencripta tu mensaje!</h1>
+      </div>
+      <div class="card-body">
+        <form action="/descifrar" method="POST">
+          <div class="mb-3 input-group">
+            <span class="input-group-text">Contraseña</span>
+            <input id="text" name="text" type="text" class="form-control"
+              value="<% if(typeof newValores != 'undefined') { %><%= newValores.text %><%}%>"
+              placeholder="Contraseña que usaste para cifrar." minlength="16" maxlength="32">
+          </div>
+          <div class="mb-3 input-group">
+           
+            <input type="file" id="file" name="file" class="form-control">
+          </div>
+          <div class="mb-3">
+            <div class="form">
+              <select name="type" class="form-select" id="floatingSelect" aria-label="Floating label select example"
+                required>
+                <option selected="true" value='' disabled hidden>
+                  Ingrese el tipo de cifrado.
+                </option>
+                <option value="AES" id="AES">AES-CBC</option>
+             
+              </select>
+
+            </div>
+          </div>
+          <br>
+          <div class="d-flex justify-content-center btn-group-lg">
+            <button type="submit" i class="btn btn-outline-primary">Descifrar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <%if(typeof newValores !='undefined' ) {%>
+      <br>
+      <div class="container mx-auto">
+   
+          <strong>
+            <h3>
+              Mensaje descifrado:
+            </h3>
+          </strong>
+          <input disabled class="form-control text-center" value="<%=newValores.decrypted%>">
+        
+        <% if(newValores.decrypted !=='Error al descifrar, ¡Prueba de nuevo!' ) { %>
+          <br>
+       
+    
+       
+          <%}%>
+
+            <%}%>
+
+              <!-- Toasts -->
+              <!-- TOASTS -->
+              <% if(typeof validaciones !='undefined' ) { %>
+                <% validaciones.forEach( (validacion)=> { %>
+                  <div class="toast-container">
+                    <div class="toast" role="alert" aria-live="assertive" data-bs-autohide="false">
+                      <div class="toast-header">
+                        <svg class="bd-placeholder-img rounded me-2" width="20" height="20"
+                          xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice"
+                          focusable="false">
+                          <rect width="100%" height="100%" fill="#007aff"></rect>
+                        </svg>
+                        <strong class="me-auto">¡Atención!</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                      </div>
+                      <div class="toast-body">
+                        <strong>
+                          <%= validacion.msg %>
+                        </strong>
+                      </div>
+                    </div>
+                  </div>
+                  <% }) %>
+                    <% }else{ %>
+
+      </div>
+
+      <%}%>
+        <!-- Alerts -->
+        <!-- <% if(typeof validaciones != 'undefined') { %>
+            <% validaciones.forEach( (validacion) => {  %> 
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong><%= validacion.msg %></strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <% }) %>
+          <% } %> -->
+  </div>
+  <!-- Option 1: Bootstrap Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+    crossorigin="anonymous"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+      var toastList = toastElList.map(function (toastEl) {
+        return new bootstrap.Toast(toastEl)
+      });
+      toastList.forEach(toast => toast.show());
+    });
+  </script>
+   <footer>
+    <p>5IV8 - Flores Quiroz Daniela Grisel</p>
+  
+  </footer>
+</body>
+
+</html>
