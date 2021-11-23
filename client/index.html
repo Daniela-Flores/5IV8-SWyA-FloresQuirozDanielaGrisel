@@ -1,0 +1,486 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href='style.css'>
+    </head>
+
+    <body>
+        <form id='join-form'>
+            <div id='join-box'>
+                <span id='join-username-text'>Ingresa un nickname:</span><br>
+                <input id='join-username' type='text' /><br>
+                <button id='join-button' type='submit'>Unirme</button><br>
+                <p id='join-msg'></p>
+            </div>
+        </form>
+
+        <div id='title'>
+            <h1>Draw & Guess</h1>
+            <img id='banner' src='banner.png' width='100px' height='100px' />
+        </div>
+        <div id='main-div'>
+            <div id='player-area'>
+                <div id='counter-box'>Jugador: <span id='counter'>0</span>/8</div>
+                <div id='players'></div>
+            </div>
+
+            <div id='middle-area'>
+                <div id='drawing-area'>
+                    <canvas id='canvas' width='400' height='400'></canvas>
+                </div>
+
+                <div id='tool-box'>
+                    <div id='color-box'>
+                        <div style='display: inline-block'>Color: </div>
+                        <span id='black' style='background-color:black'></span>
+                        <span id='red' style='background-color:red'></span>
+                        <span id='blue' style='background-color:blue'></span>
+                        <span id='green' style='background-color:green'></span>
+                        <span id='brown' style='background-color:brown'></span>
+                        <span id='yellow' style='background-color:yellow'></span>
+                        <span id='white' style='background-color:white'></span>
+                    </div>
+                    <div id='special-box'>
+                        <div id='clear'>Borrar</div>
+                        <div id='save'>Guardar</div>
+                    </div>
+                    <div id='width-box'>
+                        <div style='display: inline-block'>Grosor: </div>
+                        <span id='1' style='width:2px;height:2px;'></span>
+                        <span id='5' style='width:5px;height:5px;'></span>
+                        <span id='10' style='width:10px;height:10px;'></span>
+                        <span id='15' style='width:15px;height:15px;'></span>
+                        <span id='20' style='width:20px;height:20px;'></span>
+                        <span id='25' style='width:25px;height:25px;'></span>
+                    </div>
+                </div>
+
+                <div id='self-box'>
+                    <span id='self'></span>
+                    <span id='ready' class='unselected'>Estoy listo!</span>
+                    <span id='prompt'>Respuesta: </span><input id='answer' type='text'>
+                    <button id='answer-button'>Adivinar</button>
+                </div>
+            </div>
+    
+            <div id="chat-area">
+                <div id='chat-text'></div>
+                <input id='chat-input' type='text'>
+                <div id='chat-button'>Enviar</div>
+            </div>
+        </div>
+
+        <div id='downloads'></div>
+    </body>
+</html>
+
+<!-- Scripts  -->
+<script src="http://cdn.socket.io/socket.io-1.4.5.js"></script>
+<script>
+    var form = document.getElementById('join-form');
+    var username = document.getElementById('join-username');
+    var joinMsg = document.getElementById('join-msg');
+    var canvas = document.getElementById('canvas');
+    var counter = document.getElementById('counter');
+    var players = document.getElementById('players');
+    var selfBox = document.getElementById('self-box');
+    var client = document.getElementById('self');
+    var ready = document.getElementById('ready');
+    var chatText = document.getElementById('chat-text');
+    var chatButton = document.getElementById('chat-button');
+    var chatInput = document.getElementById('chat-input');
+    var colorBox = document.getElementById('color-box');
+    var toolBox = document.getElementById('tool-box');
+    var clear = document.getElementById('clear');
+    var save = document.getElementById('save');
+    var downloads = document.getElementById('downloads');
+    var context = canvas.getContext('2d');
+    var answer = document.getElementById('answer');
+    var answerButton = document.getElementById('answer-button');
+    var playerName;
+    var numbers = [];
+    var chosenWord = 0;
+    var intervalFunction = null;
+    var sendTime = 200;
+    var choosingWord = false;
+    var drawing = false;
+    var mousePressed = false;
+    var timestamp;
+    var x = 0;
+    var y = 0;
+    var dataCount = 100;
+    var currDataCount = 0;
+    var myDrawing = [];
+    var socket = io();
+
+    // Para unirse al juego
+    form.onsubmit = function(e) {
+        e.preventDefault();
+        socket.emit('join', {username:username.value});
+    }
+    // Respuesta para unirse
+    socket.on('joinResponse', function(res) {
+        if(res.success) {
+            form.style.display = 'none';
+            selfBox.style.visibility = 'visible';
+            playerName = res.username;
+            client.innerHTML = res.username;
+            chatText.innerHTML += 'Bienvenido ' + res.username + '!<br>';
+        } else {
+            joinMsg.innerHTML = res.msg;
+        }
+    });
+
+    // Actualizar sala
+    socket.on('updatePlayers', function(res) {
+        // Test players exist
+        if(res.players == null) return;
+
+        // Quitar jugador actual de la lista
+        while(players.firstChild) {
+            players.removeChild(players.firstChild);
+        }
+
+        // Completar lista de jugadores
+        for(var i in res.players) {
+            var player = res.players[i];
+            var newPlayer = document.createElement('div');
+            var playerName = document.createElement('span');
+            var state = document.createElement('span');
+            var score = document.createElement('span');
+            newPlayer.id = player.username;
+            newPlayer.className = 'player-box';
+            playerName.className = 'player-name';
+            playerName.innerHTML = player.username;
+            state.className = 'player-state';
+            changeToClass(state, player.ready? 'default-shown': 'default-hidden');
+            state.innerHTML = 'Listo!';
+            score.className = 'player-score';
+            score.innerHTML = 0;
+            newPlayer.appendChild(playerName);
+            newPlayer.appendChild(score);
+            newPlayer.appendChild(state);
+            players.appendChild(newPlayer);
+        }
+
+        // Actualizar contador de jugadores
+        counter.innerHTML = res.players.length;
+    });
+
+    // Boton "Listo"
+    ready.onclick = function(e) {
+        if(ready.className === 'unselected') {
+            ready.className = 'selected';
+            socket.emit('ready', {state:true});
+        } else if(ready.className === 'selected') {
+            ready.className = 'unselected';
+            socket.emit('ready', {state:false});
+        }
+    };
+
+    // Enviar mensaje al chat
+    chatButton.onclick = function(e) {
+        var msg = chatInput.value;
+        if(msg != '') {
+            socket.emit('msg', {msg:msg});
+            chatInput.value = '';
+        }
+    }
+
+    // Iniciar el juego
+    socket.on('gameStart', function(data) {
+        chatText.innerHTML += 'Inicio del juego<br>';
+        ready.className = 'ingame';
+        ready.innerHTML = '';
+        resetStates();
+    });
+
+    // Escoger palabra
+    socket.on('chooseWord', function(data) {
+        context.fillStyle = 'white';
+        context.clearRect(0,0,canvas.width,canvas.height);
+        var index = 1;
+        var dataIdx = 0;
+        context.fillStyle = 'black';
+        context.strokeStyle = 'black';
+        context.textAlign = 'center';
+        context.lineWidth = 1;
+        context.font = '20px Aerial';
+        for(var i = 0; i < 2; i++) {
+            for(var j = 0; j < 4; j++) {
+                if(data.numbers[dataIdx] === index) {
+                    context.strokeRect(i*200, j*100, 200, 100);
+                    context.fillText(''+index, i*200+100, j*100+50);
+                    dataIdx++;
+                }
+                else context.fillRect(i*200, j*100, 200, 100);
+                index++;
+            }
+        }
+        choosingWord = true;
+        numbers = data.numbers;
+        chatText.innerHTML += '¡Escoge una palabra!<br>';
+    });
+    // Receive word response
+    socket.on('chosenWord', function(data) {
+        chosenWord = data.word;
+        context.fillStyle = 'white';
+        context.clearRect(0,0,canvas.width,canvas.height);
+        context.strokeStyle = 'black';
+        context.textAlign = 'center';
+        context.font = '30px Aerial';
+        context.fillStyle = 'black';
+        context.fillText(data.word, canvas.width/2-(context.measureText(data.word).width)/2, canvas.height/2);
+        chatText.innerHTML += 'Tu palabra es: ' + data.word + '<br>';
+    });
+
+    // Comenzar dibujo
+    socket.on('startDrawing', function(data) {
+        context.fillStyle = 'white';
+        context.clearRect(0,0,canvas.width,canvas.height);
+        context.strokeStyle = 'black';
+        context.lineJoin = 'round';
+        context.lineWidth = 3;
+        drawing = true;
+        resetStates();
+
+        intervalFunction = setInterval(function() {
+            socket.emit('drawData', {data:myDrawing});
+        }, sendTime);
+    });
+
+    // Cuenta regresiva
+    socket.on('remainTime', function(data) {
+        ready.innerHTML = ''+data.time;
+    });
+
+    // Se acaba el tiempo
+    socket.on('timesUp', function(data) {
+        if(intervalFunction !== null) clearInterval(intervalFunction);
+        intervalFunction = null;
+        drawing = false;
+        chatText.innerHTML += 'Se acabó el tiempo :(<br>';
+        context.clearRect(0,0,canvas.width,canvas.height);
+        myDrawing = parseSendImageData(context.getImageData(0,0,canvas.width,canvas.height));
+        answer.value = '';
+        resetStates();
+    });
+
+    // Recibir dibujo
+    socket.on('drawData', function(data) {
+        context.clearRect(0,0,canvas.width,canvas.height);
+        context.putImageData(parseReceiveImageData(data.data), 0, 0);
+    });
+
+    // Señal para empezar a adivinar
+    socket.on('guess', function(data) {
+        chatText.innerHTML += 'This is a ' + data.wordLength + '-letter word.<br>';
+        context.clearRect(0,0,canvas.width,canvas.height);
+    });
+
+    // Recibir resultado
+    socket.on('result', function(data) {
+        chatText.innerHTML += "Answer is: " + data.word + '<br>';
+        context.clearRect(0,0,canvas.width,canvas.height);
+        resetStates();
+    });
+
+    // Respuesta para un jugador (individual)
+    socket.on('answerResponse', function(data){
+        var player = document.getElementById(data.playerName);
+        var tempNode = player.childNodes[2];
+        if(data.success) {
+            tempNode.innerHTML = '✓ +' + data.increment;
+            changeToClass(tempNode, 'right-answer');
+            tempNode = player.childNodes[1];
+            tempNode.innerHTML = parseInt(data.point);
+        } else {
+            tempNode.innerHTML = data.data;
+            changeToClass(tempNode, 'wrong-answer');
+        }
+    });
+
+    // Se acaba el juego
+    socket.on('gameOver', function(data) {
+        chatText.innerHTML += data.msg + '<br>';
+        var winner = data.winner;
+        if(winner.length == 1) {
+            chatText.innerHTML += 'El ganador es: ' + winner[0] + '<br>';
+        } else {
+            chatText.innerHTML += 'Los ganadores son: ';
+            for(var i = 0; i < winner.length; i++) {
+                chatText.innerHTML += winner[i];
+                if(i !== winner.length-1) chatText.innerHTML += ', ';
+            }
+            chatText.innerHTML += '!<br>';
+        }
+
+        resetGame();
+    });
+
+    // Click en Canvas
+    canvas.onclick = function(event) {
+        var rect = canvas.getBoundingClientRect();
+        var x = event.clientX - rect.left;
+        var y = event.clientY - rect.top;
+
+        // Escoger palabra
+        if(choosingWord) {
+            x = Math.floor(x/200);
+            y = Math.floor(y/100);
+            console.log("numero: " + (x*4 + y + 1));
+            chosenWord = x*4 + y + 1;
+
+            // Se escoge una palabra válida
+            for(var i = 0; i < numbers.length; i++) {
+                if(numbers[i] === chosenWord) {
+                    socket.emit('chosenWord', {number:chosenWord});
+                    choosingWord = false;
+                    break;
+                }
+            }
+        } else if(drawing) {
+            context.beginPath();
+            context.arc(x,y,context.lineWidth/2,0,2 * Math.PI);
+            context.closePath();
+            context.fillStyle = context.strokeStyle;
+            context.fill();
+            context.fillStyle = 'white';
+        }
+    }
+    // Mouse presiona canvas
+    canvas.onmousedown = function(event) {
+        if(drawing) {
+            var rect = canvas.getBoundingClientRect();
+            mousePressed = true;
+            x = event.clientX - rect.left;
+            y = event.clientY - rect.top;
+            context.beginPath();
+            context.moveTo(x, y);
+            currDataCount = dataCount;
+        }
+    }
+    // Mouse se mueve en canvas
+    canvas.onmousemove = function(event) {
+        if(drawing && mousePressed) {
+            var rect = canvas.getBoundingClientRect();
+            x = event.clientX - rect.left;
+            y = event.clientY - rect.top;
+
+            context.lineTo(x, y);
+            context.closePath();
+            context.stroke();
+            context.beginPath();
+            context.moveTo(x, y);
+
+            if(--currDataCount >= 0) {
+                currDataCount = dataCount;
+                myDrawing = parseSendImageData(context.getImageData(0,0,canvas.width,canvas.height));
+            }
+        }
+    }
+    // Se retira mouse
+    canvas.onmouseup = function(event) {
+        if(drawing) {
+            var rect = canvas.getBoundingClientRect();
+            mousePressed = false;
+            x = event.clientX - rect.left;
+            y = event.clientY - rect.top;
+            context.lineTo(x, y);
+            context.closePath();
+            context.stroke();
+
+            myDrawing = parseSendImageData(context.getImageData(0,0,canvas.width,canvas.height));
+        }
+    }
+
+    // Box color
+    for(var i in colorBox.childNodes) {
+        colorBox.childNodes[i].onclick = function() {
+            context.strokeStyle = event.target.id;
+          
+        }
+    }
+    // Box herramientas
+    for(var i in toolBox.childNodes) {
+        toolBox.childNodes[i].onclick = function() {
+            context.lineWidth = event.target.id;
+        
+        }
+    }
+    // Limpiar
+    clear.onclick = function() {
+        context.clearRect(0,0,canvas.width,canvas.height);
+        myDrawing = parseSendImageData(context.getImageData(0,0,canvas.width,canvas.height));
+    }
+    // Guardar
+    save.onclick = function() {
+        if(myDrawing.length !== 0) {
+            var newCanvas = document.createElement('canvas');
+            newCanvas.setAttribute('width', canvas.width);
+            newCanvas.setAttribute('height', canvas.height);
+            var newctx = newCanvas.getContext('2d');
+            newctx.putImageData(parseReceiveImageData(myDrawing),0,0);
+            var img = newCanvas.toDataURL("image/png");
+            var link = document.createElement('a');
+            link.setAttribute('href', img);
+            link.setAttribute('download', chosenWord + new Date().getTime() + '.png');
+            downloads.appendChild(link);
+            link.click();
+        }
+    }
+
+    // Botón de respuesta
+    answerButton.onclick = function() {
+        if(answer.value !== '') socket.emit('answer', {answer:answer.value});
+        answer.value = '';
+    }
+
+    // Chat box mensajes
+    socket.on('msg', function(data) {
+        chatText.innerHTML += data.msg + '<br>';
+    });
+
+    // Jugador deha el juego
+    socket.on('leave', function(data) {
+        var player = document.getElementById(data.player);
+        players.removeChild(player);
+        counter.innerHTML = data.playerNumber;
+        chatText.innerHTML += data.player + ' se fué.<br>';
+    });
+
+    function parseSendImageData(imgData) {
+        var pack = [];
+        for(var i = 0; i < imgData.data.length; i++) pack.push(imgData.data[i]);
+        return pack;
+    }
+
+    function parseReceiveImageData(data) {
+        var imgData = context.createImageData(canvas.width, canvas.height);
+        for(var i = 0; i < imgData.data.length; i++) imgData.data[i] = data[i];
+
+        return imgData;
+    }
+
+    var classNames = ['default-hidden', 'default-shown', 'right-answer', 'wrong-answer'];
+    function changeToClass(node, className) {
+        for(var i in classNames) {
+            node.classList.toggle(classNames[i], className === classNames[i]);
+        }
+    }
+
+    function resetStates() {
+        for(var i = 0; i < players.childNodes.length; i++) {
+            var player = players.childNodes[i].childNodes[2];
+            changeToClass(player, 'default-hidden');
+        }
+    }
+
+    function resetGame() {
+        // Reset botón "listo"
+        ready.className = 'unselected';
+        ready.innerHTML = 'Ready';
+        
+        // Reset canvas ajustes
+        context.lineWidth = 1;
+    }
+</script>
